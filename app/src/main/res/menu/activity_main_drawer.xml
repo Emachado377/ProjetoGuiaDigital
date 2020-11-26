@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:showIn="navigation_view">
+
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/nav_home"
+            android:icon="@drawable/ic_round_map_24"
+            android:title="Tela Mapa" />
+        <item
+            android:id="@+id/nav_pesquisa"
+            android:icon="@drawable/ic_pesquisa"
+            android:title="Pesquisar" />
+        <item
+            android:id="@+id/nav_location"
+            android:icon="@drawable/ic_add_location"
+            android:title="Marcar Posição" />
+        <item
+            android:id="@+id/nav_config"
+            android:icon="@drawable/ic_baseline_settings_24"
+            android:title="Configurar Usuario" />
+        <item
+            android:id="@+id/nav_temp"
+            android:icon="@drawable/ic_temporario"
+            android:title="Marcações Temporarias" />
+        <item
+            android:id="@+id/nav_favorito"
+            android:icon="@drawable/ic_favoritos"
+            android:title="Marcações Favoritas" />
+    </group>
+</menu>
