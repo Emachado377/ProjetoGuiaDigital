@@ -3,23 +3,28 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/mobile_navigation"
-    app:startDestination="@+id/nav_home">
+    app:startDestination="@+id/nav_maps">
 
     <fragment
-        android:id="@+id/nav_home"
-        android:name="com.firebase.projetofirebase.ui.home.HomeFragment"
-        android:label="@string/menu_home"
-        tools:layout="@layout/fragment_home" />
+        android:id="@+id/nav_pesquisar"
+        android:name="com.firebase.projetofirebase.ui.pesquisar.PesquisarFragment"
+        android:label="@string/menu_pesquisar"
+        tools:layout="@layout/fragment_pesquisar" />
 
     <fragment
-        android:id="@+id/nav_gallery"
-        android:name="com.firebase.projetofirebase.ui.gallery.GalleryFragment"
-        android:label="@string/menu_gallery"
-        tools:layout="@layout/fragment_gallery" />
+        android:id="@+id/nav_favoritos"
+        android:name="com.firebase.projetofirebase.ui.favoritos.FavoritosFragment"
+        android:label="@string/menu_favoritos"
+        tools:layout="@layout/fragment_favoritos" />
 
     <fragment
-        android:id="@+id/nav_slideshow"
-        android:name="com.firebase.projetofirebase.ui.slideshow.SlideshowFragment"
-        android:label="@string/menu_slideshow"
-        tools:layout="@layout/fragment_slideshow" />
+        android:id="@+id/nav_configurar"
+        android:name="com.firebase.projetofirebase.ui.configuar.ConfigurarFragment"
+        android:label="@string/menu_configurar"
+        tools:layout="@layout/fragment_configurar" />
+    <fragment
+        android:id="@+id/nav_maps"
+        android:name="com.firebase.projetofirebase.ui.maps.MapsFragment"
+        android:label="@string/menu_maps"
+        tools:layout="@layout/fragment_maps" />
 </navigation>

@@ -3,11 +3,8 @@ package com.firebase.projetofirebase;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
-import android.view.View;
 import android.view.Menu;
 
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 
@@ -35,8 +32,8 @@ public class TelaPrincipal extends AppCompatActivity {
         NavigationView navigationView = findViewById(R.id.nav_view);
         // Passing each menu ID as a set of Ids because each
         // menu should be considered as top level destinations.
-        mAppBarConfiguration = new AppBarConfiguration.Builder(
-                R.id.nav_home, R.id.nav_gallery, R.id.nav_slideshow)
+        mAppBarConfiguration = new AppBarConfiguration.Builder(R.id.nav_maps,
+                R.id.nav_pesquisar, R.id.nav_favoritos, R.id.nav_configurar)
                 .setDrawerLayout(drawer)
                 .build();
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
@@ -64,17 +61,9 @@ public class TelaPrincipal extends AppCompatActivity {
     public boolean onNavigationItemSelected(MenuItem item){
         int id = item.getItemId();
 
-        if ( id == R.id.nav_home){
+        if ( id == R.id.nav_pesquisar){
 
-        }else if (id == R.id.nav_pesquisa){
-
-        }else if (id == R.id.nav_location){
-
-        }else if (id == R.id.nav_config){
-
-        }else if (id == R.id.nav_temp){
-
-        }else if (id == R.id.nav_favorito){
+        }else if (id == R.id.nav_maps){
 
         }
 

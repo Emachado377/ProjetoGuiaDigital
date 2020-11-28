@@ -1,4 +1,4 @@
-package com.firebase.projetofirebase.ui.slideshow;
+package com.firebase.projetofirebase.ui.configuar;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -14,15 +14,15 @@ import androidx.lifecycle.ViewModelProviders;
 
 import com.firebase.projetofirebase.R;
 
-public class SlideshowFragment extends Fragment {
+public class ConfigurarFragment extends Fragment {
 
-    private SlideshowViewModel slideshowViewModel;
+    private ConfigurarViewModel slideshowViewModel;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
         slideshowViewModel =
-                ViewModelProviders.of(this).get(SlideshowViewModel.class);
-        View root = inflater.inflate(R.layout.fragment_slideshow, container, false);
+                ViewModelProviders.of(this).get(ConfigurarViewModel.class);
+        View root = inflater.inflate(R.layout.fragment_configurar, container, false);
         final TextView textView = root.findViewById(R.id.text_slideshow);
         slideshowViewModel.getText().observe(getViewLifecycleOwner(), new Observer<String>() {
             @Override

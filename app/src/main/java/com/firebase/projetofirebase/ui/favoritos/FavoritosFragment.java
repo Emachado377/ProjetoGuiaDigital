@@ -1,4 +1,4 @@
-package com.firebase.projetofirebase.ui.gallery;
+package com.firebase.projetofirebase.ui.favoritos;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -14,17 +14,17 @@ import androidx.lifecycle.ViewModelProviders;
 
 import com.firebase.projetofirebase.R;
 
-public class GalleryFragment extends Fragment {
+public class FavoritosFragment extends Fragment {
 
-    private GalleryViewModel galleryViewModel;
+    private FavoritosViewModel favoritosViewModel;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-        galleryViewModel =
-                ViewModelProviders.of(this).get(GalleryViewModel.class);
-        View root = inflater.inflate(R.layout.fragment_gallery, container, false);
+        favoritosViewModel =
+                ViewModelProviders.of(this).get(FavoritosViewModel.class);
+        View root = inflater.inflate(R.layout.fragment_favoritos, container, false);
         final TextView textView = root.findViewById(R.id.text_gallery);
-        galleryViewModel.getText().observe(getViewLifecycleOwner(), new Observer<String>() {
+        favoritosViewModel.getText().observe(getViewLifecycleOwner(), new Observer<String>() {
             @Override
             public void onChanged(@Nullable String s) {
                 textView.setText(s);
