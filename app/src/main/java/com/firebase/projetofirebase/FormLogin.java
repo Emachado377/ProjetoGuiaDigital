@@ -100,7 +100,7 @@ public class FormLogin extends AppCompatActivity {
         }
     }
     private void IrParaTelaPrincipal(){
-        Intent intent = new Intent (FormLogin.this,TelaPrincipal.class);
+        Intent intent = new Intent (FormLogin.this,MapsActivity.class);
         startActivity(intent);
     }
     private void IniciarComponentes(){
