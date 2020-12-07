@@ -6,4 +6,42 @@
     android:layout_height="match_parent"
     tools:context=".ConfigurarPerfil">
 
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fab"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/fab_margin"
+        app:srcCompat="@android:drawable/ic_menu_camera"
+        tools:ignore="MissingConstraints"
+        tools:layout_editor_absoluteX="177dp"
+        tools:layout_editor_absoluteY="268dp" />
+
+    <ImageView
+        android:id="@+id/imagem"
+        android:layout_width="112dp"
+        android:layout_height="136dp"
+        android:contentDescription="Foto tirada"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        tools:layout_editor_absoluteY="114dp"
+        tools:ignore="MissingConstraints" />
+
+    <TextView
+        android:id="@+id/confperfil"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Configurar Perfil"
+        tools:layout_editor_absoluteX="154dp"
+        tools:layout_editor_absoluteY="64dp"
+        tools:ignore="MissingConstraints" />
+
+    <TextView
+        android:id="@+id/alterarImage"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Alterar Foto"
+        tools:layout_editor_absoluteX="168dp"
+        tools:layout_editor_absoluteY="334dp"
+        tools:ignore="MissingConstraints" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>
