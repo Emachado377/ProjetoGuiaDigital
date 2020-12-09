@@ -1,9 +1,7 @@
 package com.firebase.projetofirebase;
 
 import androidx.appcompat.app.AppCompatActivity;
-
 import android.os.Bundle;
-
 
 public class MainActivity extends AppCompatActivity{
 
