@@ -11,33 +11,60 @@ import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
+import android.provider.Settings;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback {
 
-    private GoogleMap mMap;
+
     private Button Percurso;
     private Button GravarPosicao;
     private Button Configurar;
     private ImageButton Sair;
     private ImageButton SeuLocal;
     private FirebaseAuth usuario = FirebaseAuth.getInstance(); // Intanciando o firebase de autenticação
-    double latitude;// = -29.1678;
-    double longitude;// =-51.1794;
-    int permissao_OK = 1; // 1 - sem permissão  2- com permissão
-    int posicaoLocal = 1; // 1- posição inicial  2- Posição do usuario
+
+    //O classe abaixo irá fornecer os métodos para interagir com o GPS bem como recuperar os dados do posicionamento
+    private FusedLocationProviderClient servicoLocalizacao;
+
+    //Já vem com o código original, serve para referenciar o Mapa que será montado na tela bem
+    //como usar os métodos para posicionar, adicionar marcador e tudo mais
+    private GoogleMap mMap;
+
+    //Variáveis para armazenar os pontos cardeais recuperados pelo GPS
+    private double latitude, longitude;
+
+    //Variável para armazenar se o usuario clicou em permitir ou não
+    private boolean permitiuGPS = false;
+
+    //Variável para armazenar o ponto retornoado pelo GPS
+    Location ultimaPosicao;
+
+    //Variavel para definir o zoom no mapa
+    float zoomLevel = 8.0f;
+
+    //Variaveis para armazenar as coordenadas
+    double myLatitude;
+    double myLongitude;
+    double Latitude;
+    double Longitude;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,20 +76,44 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         Configurar = findViewById(R.id.BT_Configurar);
         Sair = findViewById(R.id.tx_sair);
         SeuLocal = findViewById(R.id.BT_SeuLocal);
-        
-        pedirPermissoes();
 
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.mapa);
         mapFragment.getMapAsync(this);
 
+        servicoLocalizacao = LocationServices.getFusedLocationProviderClient(this);
+        //Verificar se o  usuário já deu permissão para o uso do GPS
+        //No caso do GPS, quando o usuário clicar para permitir ou não o acesso aos dados de localização,
+        //será executado o método onRequestPermissionsResults. Dentro desse método já podemos pegar
+        //os dados de latitude e longitude.
 
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION},120);
+        }else{
+            permitiuGPS = true;
+        }
+
+        //Recuperação do gerenciador de localização
+        LocationManager gpsHabilitado = (LocationManager) getSystemService(LOCATION_SERVICE);
+        //Verificação se o GPS está habilitado, caso não esteja...
+        if(!gpsHabilitado.isProviderEnabled(LocationManager.GPS_PROVIDER)){
+            //... abre a tela de configurações na opção para habilitar o GPS ou não
+            startActivity(new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS));
+            Toast.makeText(getApplicationContext(), "Para este aplicativo é necessário habilitar o GPS", Toast.LENGTH_LONG).show();
+        }
+
+        // Botões de seleção tela proncipal
         Percurso.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
-                Intent tela_Percurso = new Intent(MapsActivity.this, PercursoPlanejado.class);
-                startActivity(tela_Percurso);
+                // Valores para Teste - Desenvolver a leitura de uma lista na activity Percurso Desejado.
+                Latitude = -29.100;
+                Longitude = -51.100;
+
+                atribuiPosicao();
+               // Intent tela_Percurso = new Intent(MapsActivity.this, PercursoPlanejado.class);
+                //startActivity(tela_Percurso);
             }
         });
 
@@ -91,35 +142,19 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         SeuLocal.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
-                posicaoLocal = 2;
-                configurarServico();
+                zoomLevel = 18.5f;
+                recuperarPosicaoAtual();
+
+
             }
-
         });
-
     }
 
+    // Define um indicador no mapa
     @Override
-    public void onMapReady(GoogleMap googleMap) { // Define um indicador no mapa
+    public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
-        float zoomLevel = 16.0f;
-        if (permissao_OK == 2) {
-            if (posicaoLocal == 2) {
-                // Add a marker in Sydney and move the camera
-                // LatLng sydney = new LatLng(-29.1678, -51.1794);
-                LatLng sydney = new LatLng(59.1678, -51.1794);
-                mMap.addMarker(new MarkerOptions().position(sydney).title("Marker in Sydney"));
-                mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
-
-            } else if (posicaoLocal == 1) {
-                LatLng posAtual = new LatLng(latitude, longitude);
-                mMap.addMarker(new MarkerOptions().position(posAtual).title("Sua Posição Atual"));
-                mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(posAtual, zoomLevel));
-            }
-
-        } else {
-            pedirPermissoes();
-        }
+        recuperarPosicaoAtual();
     }
 
     // Metodo para voltar para tela de login
@@ -129,70 +164,91 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         finish();
     }
 
-    private void pedirPermissoes() { // Busca as informações de permissões no "Manifest"
-        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
-                && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 1);
-            System.out.println("Problema no manifest");
+
+
+    //Adiciona o botão para centralizar o mapa na posição atual. Esse botão é aquele parecido com um
+    //alvo que fica no canto superior direito do mapa.
+    private void adicionaComponentesVisuais() {
+        //Se o objeto do mapa não existir, encerra o carregamento no return
+        if (mMap == null) {
+            return;
         }
-        else{
-            configurarServico();
-            System.out.println("Pedir Permissões");
-        }
-
-    }
-    @Override
-    public void onRequestPermissionsResult(int requestCode, String permissions[], int[] grantResults) {
-        switch (requestCode) {
-            case 1: {
-                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    permissao_OK = 2;
-                    configurarServico();
-
-                } else {
-                    Toast.makeText(this, "Não vai funcionar!!!", Toast.LENGTH_LONG).show();
-                }
-                return;
-            }
-        }
-    }
-
-    public void configurarServico(){  // Busca a informação do nosso dispositivo e exibe no aplicativo
-
+        //Try/catch somente para não aparecer algum erro ao usuário com relação à permissão
         try {
-            LocationManager locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+            //Teste para verificar se o usuário já permitiu o acesso ao GPS, caso sim...
+            if (permitiuGPS) {
+                //Adiciona o botão que quando clicado vai para a posição atual do celular/GPS
+                mMap.setMyLocationEnabled(true);
+                //Habilita o botão para ser clicado
+                mMap.getUiSettings().setMyLocationButtonEnabled(true);
+            } else { //Se caso o usuário não permitiu o acesso aos dados de localização
+                mMap.setMyLocationEnabled(false); //Remove o botão
+                mMap.getUiSettings().setMyLocationButtonEnabled(false); //Desabilita o botão
 
-            LocationListener locationListener = new LocationListener() { // locationListener fica atento as mudanças do sistema de localização
-                public void onLocationChanged(Location location) { // Quando mudar a localização  esse metodo chama o metodo de atualização
-                    atualizar(location);
+                //Limpa a última posição recuperada pois não é possível acessar o GPS sem a permissão
+                ultimaPosicao  = null;
+
+                //Pede a permissão novamente
+                if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                    ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION},120);
                 }
-
-                public void onStatusChanged(String provider, int status, Bundle extras) { } //quando muda o status da localização ( falha GPS, sinal fraco ...)
-
-                public void onProviderEnabled(String provider) { }
-
-                public void onProviderDisabled(String provider) { }
-            };
-            locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, locationListener);
-        }catch(SecurityException ex){
-            Toast.makeText(this, ex.getMessage(), Toast.LENGTH_LONG).show();
+            }
+        } catch (SecurityException e)  {
+            Log.e("Exception: %s", e.getMessage());
         }
     }
-    public void atualizar(Location location) // Executa quando o "onLocationChanged" identifica a mudança de localiação do individuo
-    {
-        //Double latPoint = location.getLatitude();
-        // Double lngPoint = location.getLongitude();
 
-        Double myLatitude = location.getLatitude();
-        Double myLongitude = location.getLongitude();
-        LatLng myPosition = new LatLng(myLatitude, myLongitude);
-        mMap.clear();
-        mMap.addMarker(new MarkerOptions().position(myPosition).title("My Position"));
+    private void recuperarPosicaoAtual() {
+        try {
+            //Testa se a pessoa permitiu o uso dos dados de localização
+            if (permitiuGPS) {
+                Task locationResult = servicoLocalizacao.getLastLocation();
+                //Assim que os dados estiverem recuperados
+                locationResult.addOnCompleteListener(this, new OnCompleteListener() {
+                    @Override
+                    public void onComplete(Task task) {
+                        if (task.isSuccessful()) {
+                            //Recupera os dados de localização da última posição
+                            ultimaPosicao = (Location) task.getResult();
 
-        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(myPosition,
-                13.5f));
+                            //Se for um valor válido
+                            if(ultimaPosicao != null){
 
-        System.out.println("atualizar");
+                                //Atribui os valores de latitude e longetudo as variaveis global da activity
+                                myLatitude = ultimaPosicao.getLatitude();
+                                myLongitude = ultimaPosicao.getLongitude();
+                                LatLng myPosition = new LatLng(myLatitude, myLongitude);
+
+                                mMap.addMarker(new MarkerOptions().position(myPosition).title("My Position"));
+                                //Move a câmera para o ponto recuperado e aplica um Zoom de 15 (valor padrão)
+                                mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(myPosition,zoomLevel));
+
+
+
+                            }
+                        } else {
+                            //Exibe um Toast se o valor que recuperou do GPS não é válido
+                            Toast.makeText(getApplicationContext(), "Não foi possível recuperar a posição.", Toast.LENGTH_LONG).show();
+                            //Escreve o erro no LogCat
+                            Log.e("TESTE_GPS", "Exception: %s", task.getException());
+                        }
+                    }
+                });
+            }
+        } catch(SecurityException e)  {
+            Log.e("TESTE_GPS", e.getMessage());
+        }
     }
 
+    private void atribuiPosicao() {
+        //Se for um valor válido
+        if (Latitude != 0 && Longitude != 0) {
+
+            LatLng myPosition = new LatLng(Latitude, Longitude);
+
+            mMap.addMarker(new MarkerOptions().position(myPosition).title("My Position"));
+            //Move a câmera para o ponto recuperado e aplica um Zoom de 15 (valor padrão)
+            mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(myPosition, zoomLevel));
+        }
+    }
 }
