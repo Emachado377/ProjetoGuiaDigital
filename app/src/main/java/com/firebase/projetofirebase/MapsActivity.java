@@ -49,7 +49,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         Configurar = findViewById(R.id.BT_Configurar);
         Sair = findViewById(R.id.tx_sair);
         SeuLocal = findViewById(R.id.BT_SeuLocal);
-
+        
         pedirPermissoes();
 
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.

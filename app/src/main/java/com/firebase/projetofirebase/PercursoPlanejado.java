@@ -10,5 +10,7 @@ public class PercursoPlanejado extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_percurso_planejado);
+
+        getSupportActionBar().hide(); // Esconder a Action Bar
     }
 }

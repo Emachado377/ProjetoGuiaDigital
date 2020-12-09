@@ -31,6 +31,9 @@ public class ConfigurarPerfil extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_configurar_perfil);
+
+        getSupportActionBar().hide(); // Esconder a Action Bar
+
         //Toolbar toolbar = findViewById(R.id.toolbar);
       //  setSupportActionBar(toolbar);
 
