@@ -10,38 +10,136 @@
         android:id="@+id/fab"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_margin="@dimen/fab_margin"
+        android:layout_marginStart="9dp"
+        android:layout_marginBottom="9dp"
+        app:layout_constraintBottom_toTopOf="@+id/alterarImage"
+        app:layout_constraintStart_toStartOf="@+id/alterarImage"
+        app:layout_constraintTop_toBottomOf="@+id/imagem"
         app:srcCompat="@android:drawable/ic_menu_camera"
-        tools:ignore="MissingConstraints"
-        tools:layout_editor_absoluteX="177dp"
-        tools:layout_editor_absoluteY="268dp" />
+        tools:ignore="MissingConstraints" />
 
     <ImageView
         android:id="@+id/imagem"
-        android:layout_width="112dp"
-        android:layout_height="136dp"
+        android:layout_width="104dp"
+        android:layout_height="0dp"
+        android:layout_marginBottom="24dp"
         android:contentDescription="Foto tirada"
+        app:layout_constraintBottom_toTopOf="@+id/fab"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        tools:layout_editor_absoluteY="114dp"
+        app:layout_constraintTop_toBottomOf="@+id/confperfil"
         tools:ignore="MissingConstraints" />
 
     <TextView
         android:id="@+id/confperfil"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="4dp"
+        android:layout_marginTop="64dp"
+        android:layout_marginBottom="31dp"
         android:text="Configurar Perfil"
-        tools:layout_editor_absoluteX="154dp"
-        tools:layout_editor_absoluteY="64dp"
+        app:layout_constraintBottom_toTopOf="@+id/imagem"
+        app:layout_constraintStart_toStartOf="@+id/imagem"
+        app:layout_constraintTop_toTopOf="parent"
         tools:ignore="MissingConstraints" />
 
     <TextView
         android:id="@+id/alterarImage"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginEnd="12dp"
+        android:layout_marginBottom="55dp"
         android:text="Alterar Foto"
-        tools:layout_editor_absoluteX="168dp"
-        tools:layout_editor_absoluteY="334dp"
+        app:layout_constraintBottom_toTopOf="@+id/textViewApelido"
+        app:layout_constraintEnd_toEndOf="@+id/imagem"
+        app:layout_constraintTop_toBottomOf="@+id/fab"
         tools:ignore="MissingConstraints" />
+
+    <TextView
+        android:id="@+id/textViewApelido"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="18dp"
+        android:layout_marginBottom="12dp"
+        android:text="Apelido:"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        app:layout_constraintBottom_toTopOf="@+id/editTexApelido"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/alterarImage" />
+
+    <EditText
+        android:id="@+id/editTexApelido"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginStart="14dp"
+        android:layout_marginEnd="14dp"
+        android:layout_marginBottom="9dp"
+        android:ems="10"
+        android:singleLine="true"
+        app:layout_constraintBottom_toTopOf="@+id/textViewEndereco"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textViewApelido" />
+
+    <EditText
+        android:id="@+id/editTexEndereco"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginStart="13dp"
+        android:layout_marginEnd="13dp"
+        android:layout_marginBottom="13dp"
+        android:ems="10"
+        android:singleLine="true"
+        app:layout_constraintBottom_toTopOf="@+id/textViewTelefone"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textViewEndereco" />
+
+    <TextView
+        android:id="@+id/textViewEndereco"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginBottom="9dp"
+        android:text="Endereço:"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        app:layout_constraintBottom_toTopOf="@+id/editTexEndereco"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/editTexApelido" />
+
+    <TextView
+        android:id="@+id/textViewTelefone"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginBottom="6dp"
+        android:text="Telefone:"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        app:layout_constraintBottom_toTopOf="@+id/telefone"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/editTexEndereco" />
+
+    <EditText
+        android:id="@+id/telefone"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="11dp"
+        android:ems="10"
+        android:inputType="textPersonName"
+        app:layout_constraintBottom_toTopOf="@+id/button"
+        app:layout_constraintStart_toStartOf="@+id/textViewTelefone"
+        app:layout_constraintTop_toBottomOf="@+id/textViewTelefone" />
+
+    <Button
+        android:id="@+id/button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="16dp"
+        android:onClick="botaoEnviarOnClick"
+        android:text="Enviar"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/telefone" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

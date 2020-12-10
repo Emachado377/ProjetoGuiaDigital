@@ -166,8 +166,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
 
 
-    //Adiciona o botão para centralizar o mapa na posição atual. Esse botão é aquele parecido com um
-    //alvo que fica no canto superior direito do mapa.
+    /*Adiciona o botão para centralizar o mapa na posição atual. Esse botão é aquele parecido com um
+    alvo que fica no canto superior direito do mapa.*/
     private void adicionaComponentesVisuais() {
         //Se o objeto do mapa não existir, encerra o carregamento no return
         if (mMap == null) {

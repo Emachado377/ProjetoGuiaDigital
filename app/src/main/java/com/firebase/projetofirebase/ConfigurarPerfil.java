@@ -16,6 +16,7 @@ import android.provider.MediaStore;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
 
@@ -129,4 +130,17 @@ public class ConfigurarPerfil extends AppCompatActivity {
 
         return super.onOptionsItemSelected(item);
     }
+
+    public  void botaoEnviarOnClick (View v){
+        EditText telefone = (EditText) findViewById(R.id.telefone);
+
+        String numeroString = telefone.getText().toString();
+
+        Intent telaResultado = new Intent(this, MapsActivity.class);
+        telaResultado.putExtra("telefone", Double.parseDouble(numeroString));
+
+        startActivity(telaResultado);
+
+    }
+
 }
